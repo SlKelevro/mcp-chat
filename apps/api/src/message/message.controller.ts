@@ -1,6 +1,7 @@
 import { Body, Controller, Get, NotFoundException, Param, ParseIntPipe, Post } from '@nestjs/common';
 import { SerializeDto } from '../common/interceptors/serialize-dto.interceptor';
 import { CreateMessageDto } from './dto/create-message.dto';
+import { MessageExchangeResponseDto } from './dto/message-exchange-response.dto';
 import { MessageResponseDto } from './dto/message-response.dto';
 import { MessageService } from './message.service';
 
@@ -9,7 +10,7 @@ export class MessageController {
   constructor(private readonly messageService: MessageService) {}
 
   @Post()
-  @SerializeDto(MessageResponseDto)
+  @SerializeDto(MessageExchangeResponseDto)
   create(@Body() createMessageDto: CreateMessageDto) {
     return this.messageService.create(createMessageDto);
   }

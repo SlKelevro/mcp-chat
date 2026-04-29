@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateChatDto } from './dto/create-chat.dto';
@@ -35,6 +35,16 @@ export class ChatService {
         user: true,
       },
     });
+  }
+
+  async findOneOrThrow(id: string): Promise<ChatEntity> {
+    const chat = await this.findOne(id);
+
+    if (!chat) {
+      throw new NotFoundException(`Chat ${id} was not found`);
+    }
+
+    return chat;
   }
 
   private async findOneOrFail(id: string): Promise<ChatEntity> {

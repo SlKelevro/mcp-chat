@@ -6,6 +6,7 @@ export class CreateMessageDto {
   chatId!: string;
 
   @IsEnum(MessageRole)
+  // Only user messages should be sent by clients; assistant messages are created internally.
   role!: MessageRole;
 
   @IsString()

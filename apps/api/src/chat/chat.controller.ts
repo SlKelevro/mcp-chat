@@ -1,10 +1,17 @@
-import { Body, Controller, Get, NotFoundException, Param, Post } from '@nestjs/common';
-import { SerializeDto } from '../common/interceptors/serialize-dto.interceptor';
-import { ChatResponseDto } from './dto/chat-response.dto';
-import { CreateChatDto } from './dto/create-chat.dto';
-import { ChatService } from './chat.service';
+import {
+  Body,
+  Controller,
+  Get,
+  NotFoundException,
+  Param,
+  Post,
+} from "@nestjs/common";
+import { SerializeDto } from "../common/interceptors/serialize-dto.interceptor";
+import { ChatResponseDto } from "./dto/chat-response.dto";
+import { CreateChatDto } from "./dto/create-chat.dto";
+import { ChatService } from "./chat.service";
 
-@Controller('chats')
+@Controller("chats")
 export class ChatController {
   constructor(private readonly chatService: ChatService) {}
 
@@ -20,9 +27,9 @@ export class ChatController {
     return this.chatService.findAll();
   }
 
-  @Get(':id')
+  @Get(":id")
   @SerializeDto(ChatResponseDto)
-  async findOne(@Param('id') id: string) {
+  async findOne(@Param("id") id: string) {
     const chat = await this.chatService.findOne(id);
 
     if (!chat) {
