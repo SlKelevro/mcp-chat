@@ -6,7 +6,4 @@ export class UserResponseDto {
 
   @Expose()
   email!: string;
-
-  @Expose()
-  displayName!: string;
 }

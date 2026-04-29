@@ -10,8 +10,9 @@ export class UserEntity {
   @Column({ unique: true, length: 255 })
   email!: string;
 
+  @Exclude()
   @Column({ length: 255 })
-  displayName!: string;
+  password!: string;
 
   @Exclude()
   @CreateDateColumn()

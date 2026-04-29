@@ -8,5 +8,5 @@ export class CreateUserDto {
   @IsString()
   @MinLength(1)
   @MaxLength(255)
-  displayName!: string;
+  password!: string;
 }
