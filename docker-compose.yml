@@ -1,0 +1,16 @@
+services:
+  db:
+    image: postgres:17
+    container_name: mcp-chat-db
+    restart: unless-stopped
+    ports:
+      - "36432:5432"
+    environment:
+      POSTGRES_DB: mcp_chat
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
