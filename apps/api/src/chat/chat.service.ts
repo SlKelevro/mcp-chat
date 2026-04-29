@@ -11,14 +11,18 @@ export class ChatService {
     private readonly chatRepository: Repository<ChatEntity>,
   ) {}
 
-  async create(createChatDto: CreateChatDto): Promise<ChatEntity> {
-    const chat = this.chatRepository.create(createChatDto);
+  async create(userId: string, createChatDto: CreateChatDto): Promise<ChatEntity> {
+    const chat = this.chatRepository.create({
+      ...createChatDto,
+      userId,
+    });
     const savedChat = await this.chatRepository.save(chat);
     return this.findOneOrFail(savedChat.id);
   }
 
-  async findAll(): Promise<ChatEntity[]> {
+  async findAll(userId: string): Promise<ChatEntity[]> {
     return this.chatRepository.find({
+      where: { userId },
       relations: {
         user: true,
       },
@@ -28,17 +32,17 @@ export class ChatService {
     });
   }
 
-  async findOne(id: string): Promise<ChatEntity | null> {
+  async findOne(userId: string, id: string): Promise<ChatEntity | null> {
     return this.chatRepository.findOne({
-      where: { id },
+      where: { id, userId },
       relations: {
         user: true,
       },
     });
   }
 
-  async findOneOrThrow(id: string): Promise<ChatEntity> {
-    const chat = await this.findOne(id);
+  async findOneOrThrow(userId: string, id: string): Promise<ChatEntity> {
+    const chat = await this.findOne(userId, id);
 
     if (!chat) {
       throw new NotFoundException(`Chat ${id} was not found`);
@@ -48,7 +52,12 @@ export class ChatService {
   }
 
   private async findOneOrFail(id: string): Promise<ChatEntity> {
-    const chat = await this.findOne(id);
+    const chat = await this.chatRepository.findOne({
+      where: { id },
+      relations: {
+        user: true,
+      },
+    });
 
     if (!chat) {
       throw new Error(`Chat ${id} was not found after creation`);

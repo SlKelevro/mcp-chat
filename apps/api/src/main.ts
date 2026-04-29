@@ -21,6 +21,12 @@ async function bootstrap() {
 
   const host = configService.get<string>('app.host', '0.0.0.0');
   const port = configService.get<number>('app.port', 3000);
+  const corsOrigin = configService.get<string>('app.corsOrigin', 'http://localhost:5173');
+
+  app.enableCors({
+    origin: corsOrigin,
+    credentials: true,
+  });
 
   await app.listen(port, host);
 }
